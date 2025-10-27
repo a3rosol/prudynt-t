@@ -189,7 +189,7 @@ deps() {
 	fi
 
 	PRUDYNT_ROOT="${TOP}" PRUDYNT_CROSS="${PRUDYNT_CROSS}" make -j$(nproc)
-	PRUDYNT_ROOT="${TOP}" PRUDYNT_CROSS="${PRUDYNT_CROSS}" make install
+	PRUDYNT_ROOT="${TOP}" PRUDYNT_CROSS="${PRUDYNT_CROSS}" make install || echo "Warning: live555 install failed, continuing..."
 	cd ../../
 
 	echo "import libimp"
