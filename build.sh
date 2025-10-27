@@ -16,7 +16,18 @@ prudynt() {
 	if [[ -f Makefile ]]; then
 		make clean
 		PRUDYNT_ROOT="${TOP}" PRUDYNT_CROSS="${PRUDYNT_CROSS}" make -j$(nproc)
-		PRUDYNT_ROOT="${TOP}" PRUDYNT_CROSS="${PRUDYNT_CROSS}" make install || echo "Warning: live555 install failed, continuing..."
+		PRUDYNT_ROOT="${TOP}" PRUDYNT_CROSS="${PRUDYNT_CROSS}" make install || {
+			echo "Warning: live555 install failed, copying files manually..."
+			# Manually copy headers
+			mkdir -p "$TOP/3rdparty/install/include"
+			cp -r UsageEnvironment/include/* "$TOP/3rdparty/install/include/"
+			cp -r groupsock/include/* "$TOP/3rdparty/install/include/"
+			cp -r liveMedia/include/* "$TOP/3rdparty/install/include/"
+			cp -r BasicUsageEnvironment/include/* "$TOP/3rdparty/install/include/"
+			# Manually copy libraries
+			mkdir -p "$TOP/3rdparty/install/lib"
+			find . -maxdepth 2 -name "*.so*" -exec cp -P {} "$TOP/3rdparty/install/lib/" \;
+		}
 		echo "live555 rebuilt successfully"
 	else
 		echo "Warning: live555 Makefile not found, skipping live555 rebuild"
@@ -192,7 +203,18 @@ deps() {
 	fi
 
 	PRUDYNT_ROOT="${TOP}" PRUDYNT_CROSS="${PRUDYNT_CROSS}" make -j$(nproc)
-	PRUDYNT_ROOT="${TOP}" PRUDYNT_CROSS="${PRUDYNT_CROSS}" make install || echo "Warning: live555 install failed, continuing..."
+	PRUDYNT_ROOT="${TOP}" PRUDYNT_CROSS="${PRUDYNT_CROSS}" make install || {
+		echo "Warning: live555 install failed, copying files manually..."
+		# Manually copy headers
+		mkdir -p "$TOP/3rdparty/install/include"
+		cp -r UsageEnvironment/include/* "$TOP/3rdparty/install/include/"
+		cp -r groupsock/include/* "$TOP/3rdparty/install/include/"
+		cp -r liveMedia/include/* "$TOP/3rdparty/install/include/"
+		cp -r BasicUsageEnvironment/include/* "$TOP/3rdparty/install/include/"
+		# Manually copy libraries
+		mkdir -p "$TOP/3rdparty/install/lib"
+		find . -maxdepth 2 -name "*.so*" -exec cp -P {} "$TOP/3rdparty/install/lib/" \;
+	}
 	cd ../../
 
 	echo "import libimp"
