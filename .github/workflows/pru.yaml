@@ -37,13 +37,27 @@ jobs:
             make rsync unzip wget whiptail gcc lzop u-boot-tools \
             ca-certificates cmake ccache
 
+      - name: Cache toolchain
+        id: cache-toolchain
+        uses: actions/cache@v4
+        with:
+          path: /opt/mipsel-thingino-linux-musl_sdk-buildroot
+          key: toolchain-${{ env.TOOLCHAIN_URL }}
+
       - name: Download and extract toolchain
+        if: steps.cache-toolchain.outputs.cache-hit != 'true'
         run: |
           mkdir -p /opt
           cd /opt
           wget "$TOOLCHAIN_URL" -O thingino-toolchain.tar.gz
           tar -xf thingino-toolchain.tar.gz
           cd mipsel-thingino-linux-musl_sdk-buildroot
+          ./relocate-sdk.sh
+
+      - name: Relocate toolchain
+        if: steps.cache-toolchain.outputs.cache-hit == 'true'
+        run: |
+          cd /opt/mipsel-thingino-linux-musl_sdk-buildroot
           ./relocate-sdk.sh
 
       - name: Set up toolchain and ccache env vars
@@ -73,7 +87,29 @@ jobs:
             *) echo "SUFFIX=" >> $GITHUB_ENV ;;
           esac
 
+      - name: Cache dependencies
+        id: cache-deps
+        uses: actions/cache@v4
+        with:
+          path: |
+            3rdparty/install
+            3rdparty/libhelix-aac
+            3rdparty/libwebsockets
+            3rdparty/opus
+            3rdparty/libschrift
+            3rdparty/json-c
+            3rdparty/live
+            3rdparty/ingenic-lib
+            3rdparty/ingenic-musl
+            3rdparty/libaudioshim
+            3rdparty/faac
+          key: deps-${{ matrix.target }}-${{ matrix.build_type }}-${{ hashFiles('build.sh', 'scripts/**') }}
+          restore-keys: |
+            deps-${{ matrix.target }}-${{ matrix.build_type }}-
+            deps-${{ matrix.target }}-
+
       - name: Build deps
+        if: steps.cache-deps.outputs.cache-hit != 'true'
         run: |
           ./build.sh deps ${{ matrix.target }} $SUFFIX
 
