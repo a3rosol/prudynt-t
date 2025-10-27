@@ -56,9 +56,12 @@ prudynt() {
 	LDFLAGS=" -L./3rdparty/install/lib" \
 	-C $PWD all
 
-	echo "DONE. COPYING BINARY TO NFS"
-  cp -vf bin/prudynt /nfs/
-  cp -vf res/prudynt.json /nfs/
+	# Only copy to NFS if directory exists (local development)
+	if [[ -d /nfs/ ]]; then
+		echo "DONE. COPYING BINARY TO NFS"
+		cp -vf bin/prudynt /nfs/
+		cp -vf res/prudynt.json /nfs/
+	fi
 
 	exit 0
 }
