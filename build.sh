@@ -164,6 +164,7 @@ deps() {
 	if [[ ! -d live ]]; then
 		echo "Cloning live555..."
 		git clone https://github.com/themactep/thingino-live555.git live
+		cd live
 	else
 		echo "live555 directory exists, checking for updates..."
 		cd live
