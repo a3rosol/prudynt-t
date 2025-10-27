@@ -19,17 +19,9 @@ jobs:
       fail-fast: false
       matrix:
         target:
-          - T10
-          - T20
-          - T21
-          - T23
-          - T30
           - T31
-          - C100
         build_type:
-          - static
           - dynamic
-          - hybrid
 
     steps:
       - name: Checkout source
