@@ -57,10 +57,10 @@ jobs:
       - name: Set up toolchain and ccache env vars
         run: |
           echo "TOOLCHAIN_DIR=${TOOLCHAIN_DIR}" >> $GITHUB_ENV
-          echo "PATH=${TOOLCHAIN_DIR}/bin:/usr/lib/ccache:$PATH" >> $GITHUB_ENV
-          echo "CC=ccache ${TOOLCHAIN_DIR}/bin/mipsel-linux-gcc" >> $GITHUB_ENV
-          echo "CXX=ccache ${TOOLCHAIN_DIR}/bin/mipsel-linux-g++" >> $GITHUB_ENV
-          echo "PRUDYNT_CROSS=ccache ${TOOLCHAIN_DIR}/bin/mipsel-linux-" >> $GITHUB_ENV
+          echo "PATH=/usr/lib/ccache:${TOOLCHAIN_DIR}/bin:$PATH" >> $GITHUB_ENV
+          echo "CC=${TOOLCHAIN_DIR}/bin/mipsel-linux-gcc" >> $GITHUB_ENV
+          echo "CXX=${TOOLCHAIN_DIR}/bin/mipsel-linux-g++" >> $GITHUB_ENV
+          echo "PRUDYNT_CROSS=${TOOLCHAIN_DIR}/bin/mipsel-linux-" >> $GITHUB_ENV
 
       - name: Restore ccache
         id: restore-ccache
