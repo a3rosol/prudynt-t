@@ -105,7 +105,7 @@ void IMPEncoder::initProfile()
 
     IMP_Encoder_SetDefaultParam(
         &chnAttr, encoderProfile, rcMode, stream->width, stream->height,
-        stream->fps, 1, stream->gop, 2, -1, stream->bitrate);
+        stream->fps, 1, stream->gop, 1, -1, stream->bitrate);
 
     switch (rcMode)
     {
