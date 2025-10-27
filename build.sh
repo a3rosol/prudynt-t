@@ -16,7 +16,7 @@ prudynt() {
 	if [[ -f Makefile ]]; then
 		make clean
 		PRUDYNT_ROOT="${TOP}" PRUDYNT_CROSS="${PRUDYNT_CROSS}" make -j$(nproc)
-		PRUDYNT_ROOT="${TOP}" PRUDYNT_CROSS="${PRUDYNT_CROSS}" make install
+		PRUDYNT_ROOT="${TOP}" PRUDYNT_CROSS="${PRUDYNT_CROSS}" make install || echo "Warning: live555 install failed, continuing..."
 		echo "live555 rebuilt successfully"
 	else
 		echo "Warning: live555 Makefile not found, skipping live555 rebuild"
